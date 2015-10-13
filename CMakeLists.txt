@@ -5,10 +5,13 @@ project(rviz_spacenav)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  rospy
-  spacenav_node
-  std_msgs
-  view_controller_msgs
+    roscpp
+    geometry_msgs
+    sensor_msgs
+    std_msgs
+    rviz
+    pluginlib
+    spacenav_node
 )
 
 ## System dependencies are found with CMake's conventions
@@ -104,10 +107,13 @@ catkin_package(
     INCLUDE_DIRS include
     LIBRARIES rviz_spacenav
     CATKIN_DEPENDS
-        rospy
-        spacenav_node
+        roscpp
+        geometry_msgs
+        sensor_msgs
         std_msgs
-        view_controller_msgs
+        rviz
+        pluginlib
+        spacenav_node
     DEPENDS system_lib
 )
 

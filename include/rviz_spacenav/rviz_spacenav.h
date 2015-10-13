@@ -12,11 +12,11 @@
 #include <boost/thread.hpp>
 #include <boost/make_shared.hpp>
 
-#include "geometry_msgs/Twist.h"
+#include "sensor_msgs/Joy.h"
 
 
 // Define the default topic names
-const std::string DEFAULT_SPACENAV_TOPIC = "spacenav/twist";
+const std::string DEFAULT_SPACENAV_TOPIC = "spacenav/joy";
 
 // ROS parts
 ros::NodeHandlePtr node_;
@@ -25,13 +25,12 @@ ros::NodeHandlePtr node_;
 ros::Subscriber spacenav_subscriber_;
 
 // Settings and global information
-bool running_;
 bool quit_;
 
 // Package Functions
 
 // Callback for new image
-void SpacenavCallback(const geometry_msgs::Twist& msg);
+void SpacenavCallback(const sensor_msgs::Joy &msg);
 
 // Read Parameters for unsubcription
 void GetParameterValues();

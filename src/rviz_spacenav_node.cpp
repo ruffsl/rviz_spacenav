@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void SpacenavCallback(const geometry_msgs::Twist& msg)
+void SpacenavCallback(const sensor_msgs::Joy& msg)
 {
 }
 
@@ -17,7 +17,6 @@ void SetupSubscriber()
 {
     spacenav_subscriber_ = (*node_).subscribe(
                 DEFAULT_SPACENAV_TOPIC, 10, &SpacenavCallback);
-    running_ = true;
 }
 
 void InitializeROSNode(int argc, char **argv)
@@ -36,12 +35,6 @@ int main(int argc, char **argv)
 
     // Start Node
     ROS_INFO("rviz_spacenav node started.");
-    running_ = false;
-
-//    dynamic_reconfigure::Server<Config> server;
-//    dynamic_reconfigure::Server<Config>::CallbackType f;
-//    f = boost::bind(&ParameterCallback, _1, _2);
-//    server.setCallback(f);
 
     // start processing callbacks
     while(ros::ok() && !quit_)
