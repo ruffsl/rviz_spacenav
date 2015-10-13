@@ -7,55 +7,17 @@ void SpacenavCallback(const geometry_msgs::Twist& msg)
 {
 }
 
-
-void ConnectCallback(const ros::SingleSubscriberPublisher& info)
-{
-    // Check for subscribers.
-    uint32_t subscribers = rviz_publisher_.getNumSubscribers();
-    ROS_DEBUG("Subscription detected! (%d subscribers)", subscribers);
-
-    if(subscribers && !running_)
-    {
-        ROS_DEBUG("New Subscribers, Connecting to Spacenav Topic.");
-        spacenav_subscriber_ = (*node_).subscribe(
-                    DEFAULT_SPACENAV_TOPIC, 10, &SpacenavCallback);
-        running_ = true;
-    }
-}
-
-void DisconnectCallback(const ros::SingleSubscriberPublisher& info)
-{
-    // Check for subscribers.
-    uint32_t subscribers = rviz_publisher_.getNumSubscribers();
-    ROS_DEBUG("Unsubscription detected! (%d subscribers)", subscribers);
-
-    if(!subscribers && running_)
-    {
-        ROS_DEBUG("No Subscribers, Disconnecting from Input Spacenav Topic.");
-        spacenav_subscriber_.shutdown();
-        running_ = false;
-    }
-}
-
-void DisconnectHandler()
-{
-}
-
 void GetParameterValues()
 {
     // Load node-wide configuration values.
     // node_->param ("option",     option_, std::string(""));
 }
 
-void SetupPublisher()
+void SetupSubscriber()
 {
-    // Add callbacks
-    ros::SubscriberStatusCallback connect_callback = &ConnectCallback;
-    ros::SubscriberStatusCallback disconnect_callback = &DisconnectCallback;
-
-    // Publisher
-    rviz_publisher_ = node_->advertise<view_controller_msgs::CameraPlacement>(
-                DEFAULT_RVIZ_TOPIC, 1, connect_callback, disconnect_callback);
+    spacenav_subscriber_ = (*node_).subscribe(
+                DEFAULT_SPACENAV_TOPIC, 10, &SpacenavCallback);
+    running_ = true;
 }
 
 void InitializeROSNode(int argc, char **argv)
@@ -70,7 +32,7 @@ int main(int argc, char **argv)
     // Initialize Node
     InitializeROSNode(argc,argv);
     GetParameterValues();
-    SetupPublisher();
+    SetupSubscriber();
 
     // Start Node
     ROS_INFO("rviz_spacenav node started.");
